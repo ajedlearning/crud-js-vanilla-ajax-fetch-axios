@@ -1,0 +1,34 @@
+{
+  "clientes": [
+    {
+      "id": 1,
+      "nombre": "Arnaldo Espinoza",
+      "telefono": "3243232542",
+      "email": "a@hotmai.com"
+    },
+    {
+      "nombre": "Editado",
+      "telefono": "3245562",
+      "email": "asd@hotmail.com",
+      "id": 2
+    },
+    {
+      "id": 3,
+      "nombre": "Angela Aguilar",
+      "telefono": "3243232542",
+      "email": "aa@hotmai.com"
+    },
+    {
+      "id": 4,
+      "nombre": "Tulio Fornoza",
+      "telefono": "3243232542",
+      "email": "tf@hotmai.com"
+    },
+    {
+      "nombre": "Reynaldo Armas",
+      "telefono": "343253653",
+      "email": "rey@correo.com",
+      "id": 5
+    }
+  ]
+}

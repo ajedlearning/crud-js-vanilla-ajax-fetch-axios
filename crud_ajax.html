@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crud api rest ajax</title>
+  </head>
+  <body>
+    <h1>CRUD API Rest Ajax</h1>
+    <section class="crud">
+      <article>
+        <h2 class="crud-title">Agregar Clientes</h2>
+        <form class="crud-form">
+          <input
+            type="text"
+            name="name"
+            id="name"
+            placeholder="Nombre"
+            required
+          />
+          <br />
+          <input
+            type="tel"
+            name="phone"
+            id="phone"
+            placeholder="Teléfono"
+            required
+          />
+          <br />
+          <input
+            type="emai"
+            name="email"
+            id="email"
+            placeholder="Email"
+            required
+          />
+          <input type="hidden" name="action" id="action" />
+        </form>
+      </article>
+      <article>
+        <h2>Ver Clientes</h2>
+        <table class="crud-table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Teléfono</th>
+              <th>Email</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </article>
+      <template id="crud-tamplate">
+        <tr>
+          <td class="name">Arnaldo</td>
+          <td class="telefono">34234234</td>
+          <td class="email">aespinoza@hotmail.com</td>
+          <td>
+            <button class="edit">Editar</button>
+            <button class="delete">Eliminar</button>
+          </td>
+        </tr>
+      </template>
+    </section>
+    <script>
+        const d = document,
+        $table = d.querySelector(".crud-table"),
+        $form = d.querySelector(".crud-form"),
+        $template = d.getElementById("crud-template").content;
+        $fragment = d.createDocumentFragment();
+
+    </script>
+  </body>
+</html>
