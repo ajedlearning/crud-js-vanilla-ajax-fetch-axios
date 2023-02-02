@@ -1,12 +1,6 @@
 {
   "clientes": [
     {
-      "id": 1,
-      "nombre": "Arnaldo Espinoza",
-      "telefono": "3243232542",
-      "email": "a@hotmai.com"
-    },
-    {
       "nombre": "Editado",
       "telefono": "3245562",
       "email": "asd@hotmail.com",
@@ -29,6 +23,12 @@
       "telefono": "343253653",
       "email": "rey@correo.com",
       "id": 5
+    },
+    {
+      "nombre": "Pepe",
+      "telefono": "8787878",
+      "email": "pepito",
+      "id": 6
     }
   ]
 }

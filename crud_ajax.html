@@ -35,7 +35,8 @@
             placeholder="Email"
             required
           />
-          <input type="hidden" name="id" id="id" />
+          <input type="hidden" name="id" id="id" /><br />
+          <button type="submit" class="btn-main">Enviar</button>
         </form>
       </article>
       <article>
@@ -66,73 +67,126 @@
     </section>
     <script>
       const d = document,
-        $table = d.querySelector('.crud-table'),
-        $form = d.querySelector('.crud-form'),
-        $template = d.getElementById('crud-template').content,
+        $table = d.querySelector(".crud-table"),
+        $form = d.querySelector(".crud-form"),
+        $title = d.querySelector(".crud-title"),
+        $template = d.getElementById("crud-template").content,
         $fragment = d.createDocumentFragment(),
-        url =  'http://localhost:4000/clientes';
+        url = "http://localhost:4000/clientes";
 
       const ajax = (options) => {
-        let { url, method, success, error, data } = options
-        const xhr = new XMLHttpRequest()
+        let { url, method, success, error, data } = options;
+        const xhr = new XMLHttpRequest();
 
-        xhr.addEventListener('readystatechange', (e) => {
-          if (xhr.readyState !== 4) return
+        xhr.addEventListener("readystatechange", (e) => {
+          if (xhr.readyState !== 4) return;
           if (xhr.status >= 200 && xhr.status < 300) {
-            let json = JSON.parse(xhr.responseText)
-            success(json)
+            let json = JSON.parse(xhr.responseText);
+            success(json);
           } else {
-            let message = xhr.statusText || 'Ocurrió un error'
-            error(`Error ${xhr.status}: ${message}`)
+            let message = xhr.statusText || "Ocurrió un error";
+            error(`Error ${xhr.status}: ${message}`);
           }
-        })
-        xhr.open(method || 'GET', url)
-        xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8')
-        xhr.send(JSON.stringify(data))
-      }
+        });
+        xhr.open(method || "GET", url);
+        xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+        xhr.send(JSON.stringify(data));
+      };
 
       const getAllClients = () => {
         ajax({
           // method:'GET',
           url,
           success: (res) => {
-            console.log(res)
+            console.log(res);
             res.forEach((el) => {
-              $template.querySelector('.name').textContent = el.nombre
-              $template.querySelector('.phone').textContent = el.telefono
-              $template.querySelector('.email').textContent = el.email
-              $template.querySelector('.edit').dataset.name = el.nombre;
-              $template.querySelector('.edit').dataset.phone = el.telefono;
-              $template.querySelector('.edit').dataset.email = el.email;
-              $template.querySelector('.edit').dataset.id = el.id;
-              $template.querySelector('.delete').dataset.id = el.id;
-              let $clone = d.importNode($template, true)
-              $fragment.appendChild($clone)
-            })
-            $table.querySelector('tbody').appendChild($fragment)
+              $template.querySelector(".name").textContent = el.nombre;
+              $template.querySelector(".phone").textContent = el.telefono;
+              $template.querySelector(".email").textContent = el.email;
+              $template.querySelector(".edit").dataset.name = el.nombre;
+              $template.querySelector(".edit").dataset.phone = el.telefono;
+              $template.querySelector(".edit").dataset.email = el.email;
+              $template.querySelector(".edit").dataset.id = el.id;
+              $template.querySelector(".delete").dataset.id = el.id;
+              let $clone = d.importNode($template, true);
+              $fragment.appendChild($clone);
+            });
+            $table.querySelector("tbody").appendChild($fragment);
           },
           error: (err) => {
-            console.log(err)
-            $table.insertAdjacentHTML('afterend', `<p><b> ${err} </b></p>`)
+            console.log(err);
+            $table.insertAdjacentHTML("afterend", `<p><b> ${err} </b></p>`);
           },
           //data:null,
-        })
-      }
+        });
+      };
 
+      d.addEventListener("DOMContentLoaded", getAllClients);
 
-      
-      d.addEventListener('DOMContentLoaded', getAllClients)
+      d.addEventListener("submit", (e) => {
+        if (e.target === $form) {
+          e.preventDefault();
 
-      d.addEventListener("submit", e =>{
-        e.preventDefault();
-        if(e.target === $form){
-          if(!e.target.id.value){
+          if (!e.target.id.value) {
             // POST
-          }else{
-            // PUT
+            ajax({
+              url,
+              method: "POST",
+              success: () => location.reload(),
+              error: (err) =>
+                $form.insertAdjacentHTML("afterend", `<p><b> ${err} </b></p>`),
+              data: {
+                nombre: e.target.name.value,
+                telefono: e.target.phone.value,
+                email: e.target.email.value,
+              },
+            });
+          } else {
+            //PUT
+            ajax({
+              url: url + "/" + e.target.id.value,
+              method: "PUT",
+              success: (res) => {
+                location.reload();
+              },
+              error: (err) =>
+                $form.insertAdjacentHTML("afterend", `<p><b> ${err} </b></p>`),
+              data: {
+                nombre: e.target.name.value,
+                telefono: e.target.phone.value,
+                email: e.target.email.value,
+              },
+            });
           }
         }
-      })
+      });
+
+      d.addEventListener("click", (e) => {
+        if (e.target.matches(".edit")) {
+          //alert("presionaste edit")
+          $title.textContent = "Editar Cliente";
+          $form.name.value = e.target.dataset.name;
+          $form.phone.value = e.target.dataset.phone;
+          $form.email.value = e.target.dataset.email;
+          $form.id.value = e.target.dataset.id;
+          d.querySelector(".btn-main").textContent = "Editar";
+        }
+        if (e.target.matches(".delete")) {
+          let conf = confirm(
+            `Estas seguro de eliminar el id : ${e.target.dataset.id} ? `
+          );
+          if (conf) {
+            ajax({
+              url: `${url}/${e.target.dataset.id}`,
+              method: "DELETE",
+              success: (res) => location.reload(),
+              error: (err) =>
+                alert(err),
+              
+            });
+          }
+        }
+      });
     </script>
   </body>
 </html>
