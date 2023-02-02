@@ -69,7 +69,8 @@
         $table = d.querySelector('.crud-table'),
         $form = d.querySelector('.crud-form'),
         $template = d.getElementById('crud-template').content,
-        $fragment = d.createDocumentFragment()
+        $fragment = d.createDocumentFragment(),
+        url =  'http://localhost:4000/clientes';
 
       const ajax = (options) => {
         let { url, method, success, error, data } = options
@@ -93,7 +94,7 @@
       const getAllClients = () => {
         ajax({
           // method:'GET',
-          url: 'http://localhost:4000/clientes',
+          url,
           success: (res) => {
             console.log(res)
             res.forEach((el) => {
@@ -117,7 +118,21 @@
           //data:null,
         })
       }
+
+
+      
       d.addEventListener('DOMContentLoaded', getAllClients)
+
+      d.addEventListener("submit", e =>{
+        e.preventDefault();
+        if(e.target === $form){
+          if(!e.target.id.value){
+            // POST
+          }else{
+            // PUT
+          }
+        }
+      })
     </script>
   </body>
 </html>
