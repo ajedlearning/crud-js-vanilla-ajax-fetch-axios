@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Crud api rest Fetch</title>
   </head>
-  <body>
+  <body style="background-color: darkslategrey; color: white;">
     <h1>CRUD API Rest Fetch</h1>
     <section class="crud">
       <article>
@@ -36,6 +36,7 @@
             required
           />
           <input type="hidden" name="id" id="id" />
+          <button type="submit" class="btn-main">Enviar</button>
         </form>
       </article>
       <article>
@@ -103,6 +104,100 @@
       }
 
       d.addEventListener('DOMContentLoaded', getAll)
+      d.addEventListener('submit', async (e) => {
+        if (e.target === $form) {
+          e.preventDefault()
+          if (e.target.id.value) {
+            //PUT
+
+            try {
+              const options = {
+                  method: 'PUT',
+                  headers: {
+                    'Content-Type': 'application/json; charset=utf-8',
+                  },
+                  body: JSON.stringify({
+                    nombre: e.target.name.value,
+                    telefono: e.target.phone.value,
+                    email: e.target.email.value,
+                  }),
+                },
+                res = await fetch(url + '/' + e.target.id.value, options)
+              json = await res.json()
+              if (!res.ok)
+                throw { status: res.status, statusText: res.statusText }
+              location.reload()
+            } catch (error) {
+              let message = err.statusText || `Ocurrión un error`
+              $form.insertAdjacentHTML(
+                'afterend',
+                `<p><b>Error: ${err.status} -> ${message}</b></p>`,
+              )
+            }
+          } else {
+            //POST
+            try {
+              const options = {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json; charset=utf-8',
+                  },
+                  body: JSON.stringify({
+                    nombre: e.target.name.value,
+                    telefono: e.target.phone.value,
+                    email: e.target.email.value,
+                  }),
+                },
+                res = await fetch(url, options)
+              json = await res.json()
+              if (!res.ok)
+                throw { status: res.status, statusText: res.statusText }
+              location.reload()
+            } catch (error) {
+              let message = err.statusText || `Ocurrión un error`
+              $form.insertAdjacentHTML(
+                'afterend',
+                `<p><b>Error: ${err.status} -> ${message}</b></p>`,
+              )
+            }
+          }
+        }
+      })
+
+      d.addEventListener('click', async (e) => {
+        if (e.target.matches('.edit')) {
+          //alert("presionaste edit")
+          $title.textContent = 'Editar Cliente'
+          $form.name.value = e.target.dataset.name
+          $form.phone.value = e.target.dataset.phone
+          $form.email.value = e.target.dataset.email
+          $form.id.value = e.target.dataset.id
+          d.querySelector('.btn-main').textContent = 'Editar'
+        }
+        if (e.target.matches('.delete')) {
+          let conf = confirm(
+            `Estas seguro de eliminar el id : ${e.target.dataset.id} ? `,
+          )
+          if (conf) {
+            try {
+              const options = {
+                  method: 'DELETE',
+                  headers: {
+                    'Content-Type': 'application/json; charset=utf-8',
+                  },
+                },
+                res = await fetch(url + '/' + e.target.dataset.id, options)
+              json = await res.json()
+              if (!res.ok)
+                throw { status: res.status, statusText: res.statusText }
+              location.reload()
+            } catch (err) {
+              let message = err.statusText || `Ocurrión un error`
+              alert(`Error: ${err.status} : ${message}`)
+            }
+          }
+        }
+      })
     </script>
   </body>
 </html>
